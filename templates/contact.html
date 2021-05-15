@@ -2,13 +2,18 @@
 <html lang="en">
 {% include "header.html" %}
 <!-- Page Header-->
-<header class="masthead" style="background-image: url('{{ url_for('static', filename = 'assets/img/contact-bg.jpg') }}')">
+<header class="masthead"
+        style="background-image: url('{{ url_for('static', filename = 'assets/img/contact-bg.jpg') }}')">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="page-heading">
+                    {% if message %}
+                    <h1>{{ message }}</h1>
+                    {% else %}
                     <h1>Contact Me</h1>
+                    {% endif %}
                     <span class="subheading">Have questions? I have answers.</span>
                 </div>
             </div>
@@ -24,11 +29,12 @@
             <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work.-->
             <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address!-->
             <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally!-->
-            <form id="contactForm" name="sentMessage" novalidate>
+            <form action="{{ url_for('contact')}}" id="contactForm" method="post" name="sentMessage" novalidate>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Name</label>
-                        <input class="form-control" data-validation-required-message="Please enter your name." id="name"
+                        <input class="form-control" data-validation-required-message="Please enter your name."
+                               name="name"
                                placeholder="Name" required
                                type="text"/>
                         <p class="help-block text-danger"></p>
@@ -38,7 +44,7 @@
                     <div class="form-group floating-label-form-group controls">
                         <label>Email Address</label>
                         <input class="form-control" data-validation-required-message="Please enter your email address."
-                               id="email" placeholder="Email Address" required
+                               name="email" placeholder="Email Address" required
                                type="email"/>
                         <p class="help-block text-danger"></p>
                     </div>
@@ -47,7 +53,7 @@
                     <div class="form-group col-xs-12 floating-label-form-group controls">
                         <label>Phone Number</label>
                         <input class="form-control" data-validation-required-message="Please enter your phone number."
-                               id="phone" placeholder="Phone Number" required
+                               name="phone" placeholder="Phone Number" required
                                type="tel"/>
                         <p class="help-block text-danger"></p>
                     </div>
@@ -56,7 +62,7 @@
                     <div class="form-group floating-label-form-group controls">
                         <label>Message</label>
                         <textarea class="form-control" data-validation-required-message="Please enter a message."
-                                  id="message" placeholder="Message" required
+                                  name="message" placeholder="Message" required
                                   rows="5"></textarea>
                         <p class="help-block text-danger"></p>
                     </div>
