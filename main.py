@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request
 import requests
+import smtplib
+import os
+
+EMAIL = os.getenv("EMAIL")
+PASSWORD = os.getenv("PASSWORD")
 
 app = Flask(__name__)
-
 posts = requests.get(url="https://api.npoint.io/0067e63917ca7a5034d9").json()
 
 
@@ -19,8 +23,16 @@ def about():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
-        print(request.form["name"])
-        print(request.form["email"])
+        name = request.form["name"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        message = request.form["message"]
+        with smtplib.SMTP(host='smtp.gmail.com') as connection:
+            connection.starttls()
+            connection.login(user=EMAIL, password=PASSWORD)
+            connection.sendmail(from_addr=email,
+                                to_addrs=EMAIL,
+                                msg=f"Subject:from {name}-{phone}!\n\n{message}")
         return render_template('contact.html', message='Successfully sent message')
     return render_template('contact.html')
 
